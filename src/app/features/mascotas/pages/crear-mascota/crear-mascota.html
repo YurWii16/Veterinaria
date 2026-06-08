@@ -1,0 +1,196 @@
+<div class="container-form mt-5 mb-5">
+  <div class="form-wrapper">
+    <div class="form-header mb-4">
+      <h1 class="display-5 fw-bold">📝 Registrar Nueva Mascota</h1>
+      <p class="text-muted fs-6">Completa los datos de tu paciente con precisión</p>
+    </div>
+
+    <form [formGroup]="formulario" (ngSubmit)="onSubmit()" class="glass-panel p-5">
+      <!-- Mensaje de error/éxito -->
+      <div *ngIf="mensaje" class="alert mb-4" [ngClass]="'alert-' + tipoMensaje" role="alert">
+        {{ mensaje }}
+      </div>
+
+      <!-- Datos de la mascota -->
+      <fieldset class="form-section mb-5">
+        <legend class="section-title h5 fw-bold text-light mb-4">🐾 Datos de la Mascota</legend>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="nombre" class="form-label fw-500">Nombre <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                id="nombre"
+                class="form-control"
+                formControlName="nombre"
+                [class.is-invalid]="nombre?.invalid && nombre?.touched"
+                placeholder="Ej: Firulais"
+              />
+              <small class="form-text text-danger" *ngIf="nombre?.invalid && nombre?.touched">
+                {{ obtenerErrorMensaje(nombre) }}
+              </small>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="especie" class="form-label fw-500">Especie <span class="text-danger">*</span></label>
+              <select
+                id="especie"
+                class="form-select"
+                formControlName="especie"
+                [class.is-invalid]="especie?.invalid && especie?.touched"
+              >
+                <option value="">Selecciona una especie</option>
+                <option *ngFor="let esp of especies" [value]="esp">
+                  {{ EspecieLabel[esp] }}
+                </option>
+              </select>
+              <small class="form-text text-danger" *ngIf="especie?.invalid && especie?.touched">
+                {{ obtenerErrorMensaje(especie) }}
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4 mt-2">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="raza" class="form-label fw-500">Raza <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                id="raza"
+                class="form-control"
+                formControlName="raza"
+                [class.is-invalid]="raza?.invalid && raza?.touched"
+                placeholder="Ej: Mestizo, Labrador"
+              />
+              <small class="form-text text-danger" *ngIf="raza?.invalid && raza?.touched">
+                {{ obtenerErrorMensaje(raza) }}
+              </small>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="fechaNacimiento" class="form-label fw-500">Fecha de Nacimiento <span class="text-danger">*</span></label>
+              <input
+                type="date"
+                id="fechaNacimiento"
+                class="form-control"
+                formControlName="fechaNacimiento"
+                [class.is-invalid]="fechaNacimiento?.invalid && fechaNacimiento?.touched"
+              />
+              <small class="form-text text-danger" *ngIf="fechaNacimiento?.invalid && fechaNacimiento?.touched">
+                {{ obtenerErrorMensaje(fechaNacimiento) }}
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4 mt-2">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="pesoKg" class="form-label fw-500">Peso (kg) <span class="text-danger">*</span></label>
+              <input
+                type="number"
+                id="pesoKg"
+                class="form-control"
+                formControlName="pesoKg"
+                [class.is-invalid]="pesoKg?.invalid && pesoKg?.touched"
+                placeholder="Ej: 15.5"
+                step="0.1"
+                min="0.5"
+                max="200"
+              />
+              <small class="form-text text-danger" *ngIf="pesoKg?.invalid && pesoKg?.touched">
+                {{ obtenerErrorMensaje(pesoKg) }}
+              </small>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Datos del dueño -->
+      <fieldset class="form-section mb-5">
+        <legend class="section-title h5 fw-bold text-light mb-4">👤 Datos del Dueño</legend>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="duenoNombre" class="form-label fw-500">Nombre del Dueño <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                id="duenoNombre"
+                class="form-control"
+                formControlName="duenoNombre"
+                [class.is-invalid]="duenoNombre?.invalid && duenoNombre?.touched"
+                placeholder="Ej: Juan García"
+              />
+              <small class="form-text text-danger" *ngIf="duenoNombre?.invalid && duenoNombre?.touched">
+                {{ obtenerErrorMensaje(duenoNombre) }}
+              </small>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="telefonoContacto" class="form-label fw-500">Teléfono de Contacto <span class="text-danger">*</span></label>
+              <input
+                type="tel"
+                id="telefonoContacto"
+                class="form-control"
+                formControlName="telefonoContacto"
+                [class.is-invalid]="telefonoContacto?.invalid && telefonoContacto?.touched"
+                placeholder="Ej: +34 612345678"
+              />
+              <small class="form-text text-danger" *ngIf="telefonoContacto?.invalid && telefonoContacto?.touched">
+                {{ obtenerErrorMensaje(telefonoContacto) }}
+              </small>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Observaciones -->
+      <fieldset class="form-section mb-5">
+        <legend class="section-title h5 fw-bold text-light mb-4">📋 Información Adicional</legend>
+
+        <div class="form-group">
+          <label for="observaciones" class="form-label fw-500">Observaciones</label>
+          <textarea
+            id="observaciones"
+            class="form-control"
+            formControlName="observaciones"
+            placeholder="Notas adicionales sobre la mascota"
+            rows="3"
+          ></textarea>
+        </div>
+      </fieldset>
+
+      <!-- Botones - Premium Styling -->
+      <div class="form-actions d-flex gap-3 justify-content-end mt-5 pt-3 border-top border-secondary">
+        <button
+          type="button"
+          class="btn btn-secondary btn-lg px-4"
+          (click)="cancelar()"
+          [disabled]="enviando"
+        >
+          ← Cancelar
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg px-4"
+          [disabled]="formulario.invalid || enviando"
+        >
+          <span *ngIf="!enviando">✓ Registrar Mascota</span>
+          <span *ngIf="enviando">
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Registrando...
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,138 @@
+<div class="container-detalles" *ngIf="mascota; else cargando">
+  <!-- Header -->
+  <div class="detalles-header">
+    <div class="header-content">
+      <button class="btn-volver" (click)="volver()">← Volver</button>
+      <h1>{{ mascota.nombre }}</h1>
+      <span class="badge" [ngClass]="'badge-' + obtenerEstadoColor()">
+        {{ mascota.obtenerEstadoSalud() | uppercase }}
+      </span>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-warning btn-sm" (click)="editarMascota()">Editar</button>
+      <button class="btn btn-danger btn-sm" (click)="eliminarMascota()">Eliminar</button>
+    </div>
+  </div>
+
+  <!-- Información de la mascota -->
+  <div class="info-section glass-panel p-4 mb-4">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="info-group">
+          <h3>🐾 Información General</h3>
+          <div class="info-item">
+            <span class="label">Especie:</span>
+            <span class="value">{{ EspecieLabel[mascota.especie] }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Raza:</span>
+            <span class="value">{{ mascota.raza }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Fecha de Nacimiento:</span>
+            <span class="value">{{ mascota.obtenerFechaNacimientoFormato() }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Edad:</span>
+            <span class="value">{{ mascota.obtenerDescripcionEdad() }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Peso:</span>
+            <span class="value">{{ mascota.pesoKg }} kg</span>
+          </div>
+          <div class="info-item">
+            <span class="label">IMC:</span>
+            <span class="value">{{ mascota.calcularIndiceMasaCorporal() | number: '1.1-1' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="info-group">
+          <h3>👤 Información del Dueño</h3>
+          <div class="info-item" *ngIf="mascota.duenoNombre">
+            <span class="label">Nombre:</span>
+            <span class="value">{{ mascota.duenoNombre }}</span>
+          </div>
+          <div class="info-item" *ngIf="mascota.telefonoContacto">
+            <span class="label">Teléfono:</span>
+            <span class="value">
+              <a [href]="'tel:' + mascota.telefonoContacto">
+                {{ mascota.telefonoContacto }}
+              </a>
+            </span>
+          </div>
+          <div class="info-item" *ngIf="mascota.observaciones">
+            <span class="label">Observaciones:</span>
+            <span class="value">{{ mascota.observaciones }}</span>
+          </div>
+          <div class="info-item" *ngIf="!mascota.duenoNombre && !mascota.telefonoContacto">
+            <p class="text-muted">Sin información del dueño</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Historial Médico -->
+  <div class="historial-section glass-panel p-4">
+    <div class="historial-header">
+      <h2>📋 Historial Médico</h2>
+      <button
+        class="btn btn-primary btn-sm"
+        (click)="abrirFormularioAtencion()"
+        *ngIf="!mostrarFormularioAtencion"
+      >
+        + Agregar Atención
+      </button>
+    </div>
+
+    <!-- Formulario de atención -->
+    <app-formulario-atencion
+      *ngIf="mostrarFormularioAtencion"
+      [mascotaId]="mascota.id"
+      (atenciónAgregada)="onAtencionAgregada()"
+      (cancelado)="cerrarFormularioAtencion()"
+    ></app-formulario-atencion>
+
+    <!-- Lista de atenciones -->
+    <div class="atenciones-timeline" *ngIf="mascota.historialClinico.length > 0; else sinHistorial">
+      <div
+        class="atencion-item"
+        *ngFor="let atencion of mascota.historialClinico | reverse"
+      >
+        <div class="atencion-fecha">
+          <span class="fecha">{{ atencion.obtenerFechaFormato() }}</span>
+        </div>
+        <div class="atencion-contenido">
+          <h4>{{ atencion.motivo }}</h4>
+          <p><strong>Diagnóstico:</strong> {{ atencion.diagnostico }}</p>
+          <p *ngIf="atencion.tratamiento">
+            <strong>Tratamiento:</strong> {{ atencion.tratamiento }}
+          </p>
+          <p *ngIf="atencion.veterinario">
+            <strong>Veterinario:</strong> {{ atencion.veterinario }}
+          </p>
+          <p *ngIf="atencion.notas">
+            <strong>Notas:</strong> {{ atencion.notas }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #sinHistorial>
+      <div class="empty-state">
+        <p class="emoji">📭</p>
+        <p>Sin historial médico registrado</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<ng-template #cargando>
+  <div class="container-detalles">
+    <div class="empty-state">
+      <p>Cargando...</p>
+    </div>
+  </div>
+</ng-template>

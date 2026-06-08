@@ -1,0 +1,116 @@
+<form [formGroup]="formulario" (ngSubmit)="onSubmit()" class="formulario-atencion glass-panel p-5 mb-4">
+  <h3 class="h5 fw-bold text-light mb-4">➕ Nueva Atención Clínica</h3>
+
+  <!-- Mensaje -->
+  <div *ngIf="mensaje" class="alert mb-4" [ngClass]="'alert-' + tipoMensaje" role="alert">
+    {{ mensaje }}
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="motivo" class="form-label fw-500">Motivo de Consulta <span class="text-danger">*</span></label>
+        <input
+          type="text"
+          id="motivo"
+          class="form-control"
+          formControlName="motivo"
+          [class.is-invalid]="motivo?.invalid && motivo?.touched"
+          placeholder="Ej: Revisión general, Vacunación"
+        />
+        <small class="form-text text-danger" *ngIf="motivo?.invalid && motivo?.touched">
+          {{ obtenerErrorMensaje(motivo) }}
+        </small>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="veterinario" class="form-label fw-500">Veterinario</label>
+        <input
+          type="text"
+          id="veterinario"
+          class="form-control"
+          formControlName="veterinario"
+          placeholder="Nombre del veterinario"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mt-2">
+    <div class="col-12">
+      <div class="form-group">
+        <label for="diagnostico" class="form-label fw-500">Diagnóstico <span class="text-danger">*</span></label>
+        <textarea
+          id="diagnostico"
+          class="form-control"
+          formControlName="diagnostico"
+          [class.is-invalid]="diagnostico?.invalid && diagnostico?.touched"
+          placeholder="Descripción del diagnóstico"
+          rows="2"
+        ></textarea>
+        <small class="form-text text-danger" *ngIf="diagnostico?.invalid && diagnostico?.touched">
+          {{ obtenerErrorMensaje(diagnostico) }}
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mt-2">
+    <div class="col-12">
+      <div class="form-group">
+        <label for="tratamiento" class="form-label fw-500">Tratamiento <span class="text-danger">*</span></label>
+        <textarea
+          id="tratamiento"
+          class="form-control"
+          formControlName="tratamiento"
+          [class.is-invalid]="tratamiento?.invalid && tratamiento?.touched"
+          placeholder="Tratamiento recomendado"
+          rows="2"
+        ></textarea>
+        <small class="form-text text-danger" *ngIf="tratamiento?.invalid && tratamiento?.touched">
+          {{ obtenerErrorMensaje(tratamiento) }}
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mt-2">
+    <div class="col-12">
+      <div class="form-group">
+        <label for="notas" class="form-label fw-500">Notas Adicionales</label>
+        <textarea
+          id="notas"
+          class="form-control"
+          formControlName="notas"
+          placeholder="Observaciones o seguimiento"
+          rows="2"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones - Premium Styling -->
+  <div class="form-actions d-flex gap-2 justify-content-end mt-4 pt-3 border-top border-secondary">
+    <button
+      type="button"
+      class="btn btn-secondary btn-sm px-3"
+      (click)="cancelar()"
+      [disabled]="enviando"
+    >
+      ✕ Cancelar
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary btn-sm px-3"
+      [disabled]="formulario.invalid || enviando"
+    >
+      <span *ngIf="!enviando">✓ Guardar Atención</span>
+      <span *ngIf="enviando">
+        <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+        Guardando...
+      </span>
+    </button>
+  </div>
+</form>

@@ -1,0 +1,18 @@
+<div class="layout-container" [class.sidebar-active]="sidebarOpen">
+  <!-- Sidebar -->
+  <app-sidebar class="app-sidebar"></app-sidebar>
+
+  <!-- Mobile Backdrop Overlay -->
+  <div class="mobile-overlay" (click)="onCloseSidebar()"></div>
+
+  <!-- Content Container -->
+  <div class="main-container">
+    <!-- Header -->
+    <app-header (toggleSidebar)="onToggleSidebar()"></app-header>
+
+    <!-- Page Content -->
+    <main class="page-content fade-in">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

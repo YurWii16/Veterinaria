@@ -1,0 +1,62 @@
+<aside class="sidebar-container glass-panel">
+  <!-- Brand logo -->
+  <div class="sidebar-brand">
+    <svg viewBox="0 0 512 512" fill="currentColor" class="brand-logo">
+      <path d="M256 224c-29.4 0-53.3-23.9-53.3-53.3S226.6 117.3 256 117.3s53.3 23.9 53.3 53.3-23.9 53.3-53.3 53.3zm-101.3-32c-29.4 0-53.3-23.9-53.3-53.3s23.9-53.3 53.3-53.3 53.3 23.9 53.3 53.3-23.9 53.3-53.3 53.3zm202.7 0c-29.4 0-53.3-23.9-53.3-53.3s23.9-53.3 53.3-53.3 53.3 23.9 53.3 53.3-23.9 53.3-53.3 53.3zM69.3 298.7c-29.4 0-53.3-23.9-53.3-53.3s23.9-53.3 53.3-53.3 53.3 23.9 53.3 53.3-23.9 53.3-53.3 53.3zm373.3 0c-29.4 0-53.3-23.9-53.3-53.3s23.9-53.3 53.3-53.3 53.3 23.9 53.3 53.3-23.9 53.3-53.3 53.3zM256 469.3c-74.9 0-149.3-48-149.3-170.7 0-48 48-74.7 96-74.7 26.7 0 42.7 10.7 53.3 21.3 10.7-10.7 26.7-21.3 53.3-21.3 48 0 96 26.7 96 74.7 0 122.7-74.4 170.7-149.3 170.7z"/>
+    </svg>
+    <span class="brand-name">VetVibe</span>
+  </div>
+
+  <!-- Navigation items -->
+  <nav class="sidebar-nav">
+    <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="9"></rect>
+        <rect x="14" y="3" width="7" height="5"></rect>
+        <rect x="14" y="12" width="7" height="9"></rect>
+        <rect x="3" y="16" width="7" height="5"></rect>
+      </svg>
+      <span>Dashboard</span>
+    </a>
+
+    <a routerLink="/dashboard/mascotas" routerLinkActive="active" class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+        <line x1="12" y1="19" x2="12" y2="22"/>
+      </svg>
+      <span>Mascotas</span>
+    </a>
+
+    <a routerLink="/dashboard/citas" routerLinkActive="active" class="nav-item">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="16" y1="2" x2="16" y2="6"></line>
+        <line x1="8" y1="2" x2="8" y2="6"></line>
+        <line x1="3" y1="10" x2="21" y2="10"></line>
+      </svg>
+      <span>Agenda Citas</span>
+    </a>
+  </nav>
+
+  <!-- User profile & Logout -->
+  <div class="sidebar-footer" *ngIf="currentUser">
+    <div class="user-info">
+      <div class="user-avatar">
+        {{ currentUser.name.charAt(0).toUpperCase() }}
+      </div>
+      <div class="user-details">
+        <span class="user-name">{{ currentUser.name }}</span>
+        <span class="user-role badge badge-info">{{ currentUser.role }}</span>
+      </div>
+    </div>
+    <button (click)="onLogout()" class="btn btn-secondary w-full logout-btn">
+      <svg class="logout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+      </svg>
+      <span>Cerrar Sesión</span>
+    </button>
+  </div>
+</aside>
