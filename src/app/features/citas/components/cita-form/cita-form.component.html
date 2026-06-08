@@ -1,0 +1,30 @@
+<div class="glass-panel p-4 mb-4">
+
+  <h3 class="mb-3">Registrar Cita</h3>
+
+  <form [formGroup]="citaForm" (ngSubmit)="guardar()">
+
+    <input class="form-control mb-3" placeholder="Mascota" formControlName="mascota">
+
+    <input class="form-control mb-3" placeholder="Dueño" formControlName="dueno">
+
+    <select class="form-control mb-3" formControlName="veterinario">
+      <option value="">Seleccione veterinario</option>
+      <option *ngFor="let v of veterinarios" [value]="v">
+        {{ v }}
+      </option>
+    </select>
+
+    <input class="form-control mb-3" type="date" formControlName="fecha">
+
+    <input class="form-control mb-3" type="time" formControlName="hora">
+
+    <input class="form-control mb-3" placeholder="Motivo" formControlName="motivo">
+
+    <button class="btn-primary w-100" type="submit">
+      Guardar Cita
+    </button>
+
+  </form>
+
+</div>
