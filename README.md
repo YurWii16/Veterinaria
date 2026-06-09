@@ -4,7 +4,7 @@ VetVibe es una aplicación web responsiva y premium desarrollada en **Angular** 
 
 ---
 
-## 📋 Estructura de Módulo y División del Trabajo
+## Estructura de Módulo y División del Trabajo
 
 El proyecto utiliza una **arquitectura modular en Angular** basada en `@NgModule` para segmentar las responsabilidades y permitir el trabajo en paralelo de hasta 3 integrantes:
 
@@ -50,7 +50,7 @@ src/app/
 
 ---
 
-## 🔐 Credenciales de Acceso para Pruebas
+## Credenciales de Acceso para Pruebas
 Para ingresar al panel de control, utiliza cualquiera de las siguientes credenciales (la contraseña es la misma para todas):
 
 *   **Administrador**: `admin@vetvibe.com` / `password123`
@@ -90,7 +90,7 @@ Ya tienes configuradas las rutas base del módulo en `citas-routing-module.ts`.
     }
     ```
 
-### 💎 Reutilización de Utilidades Compartidas (Shared)
+### Reutilización de Utilidades Compartidas (Shared)
 Todos los componentes creados en los módulos de Mascotas y Citas pueden utilizar directamente:
 *   **DateFormatPipe (`dateFormat`)**: Formatea fechas ISO o tipo Date.
     ```html
