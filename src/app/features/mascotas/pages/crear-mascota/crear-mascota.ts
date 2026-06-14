@@ -105,20 +105,19 @@ export class CrearMascotaComponent implements OnInit {
     this.enviando = true;
     this.mensaje = '';
 
-    const nuevaMascota = new Mascota(
-      '',
-      this.formulario.value.nombre,
-      this.formulario.value.especie,
-      this.formulario.value.raza,
-      new Date(this.formulario.value.fechaNacimiento),
-      parseFloat(this.formulario.value.pesoKg),
-      [],
-      this.formulario.value.duenoNombre,
-      this.formulario.value.telefonoContacto,
-      this.formulario.value.observaciones
-    );
+    const nuevaMascotaData = {
+      nombre: this.formulario.value.nombre,
+      especie: this.formulario.value.especie,
+      raza: this.formulario.value.raza,
+      fechaNacimiento: new Date(this.formulario.value.fechaNacimiento),
+      pesoKg: parseFloat(this.formulario.value.pesoKg),
+      historialClinico: [],
+      duenoNombre: this.formulario.value.duenoNombre,
+      telefonoContacto: this.formulario.value.telefonoContacto,
+      observaciones: this.formulario.value.observaciones,
+    };
 
-    this.mascotaService.crear(nuevaMascota).subscribe({
+    this.mascotaService.crear(nuevaMascotaData as any).subscribe({
       next: (mascota) => {
         this.tipoMensaje = 'success';
         this.mensaje = `✅ ${mascota.nombre} registrada exitosamente`;

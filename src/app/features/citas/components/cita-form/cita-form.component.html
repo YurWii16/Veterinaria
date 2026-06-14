@@ -3,28 +3,37 @@
   <h3 class="mb-3">Registrar Cita</h3>
 
   <form [formGroup]="citaForm" (ngSubmit)="guardar()">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Mascota</label>
+        <input class="form-control" placeholder="Nombre de la mascota" formControlName="mascota" />
 
-    <input class="form-control mb-3" placeholder="Mascota" formControlName="mascota">
+        <label class="form-label mt-2">Dueño</label>
+        <input class="form-control" placeholder="Nombre del dueño" formControlName="dueno" />
 
-    <input class="form-control mb-3" placeholder="Dueño" formControlName="dueno">
+        <label class="form-label mt-2">Veterinario</label>
+        <select class="form-select" formControlName="veterinario">
+          <option value="">Seleccione veterinario</option>
+          <option *ngFor="let v of veterinarios" [value]="v">{{ v }}</option>
+        </select>
+      </div>
 
-    <select class="form-control mb-3" formControlName="veterinario">
-      <option value="">Seleccione veterinario</option>
-      <option *ngFor="let v of veterinarios" [value]="v">
-        {{ v }}
-      </option>
-    </select>
+      <div class="col-md-6">
+        <label class="form-label">Fecha</label>
+        <input class="form-control" type="date" formControlName="fecha" />
 
-    <input class="form-control mb-3" type="date" formControlName="fecha">
+        <label class="form-label mt-2">Hora</label>
+        <input class="form-control" type="time" formControlName="hora" />
 
-    <input class="form-control mb-3" type="time" formControlName="hora">
+        <label class="form-label mt-2">Motivo</label>
+        <input class="form-control" placeholder="Motivo de la cita" formControlName="motivo" />
+      </div>
+    </div>
 
-    <input class="form-control mb-3" placeholder="Motivo" formControlName="motivo">
-
-    <button class="btn-primary w-100" type="submit">
-      Guardar Cita
-    </button>
-
+    <div class="d-flex gap-2 justify-content-end mt-4">
+      <button type="button" class="btn btn-glass btn-glass-neutral" (click)="citaForm.reset()">Cancelar</button>
+      <button type="submit" class="btn btn-glass btn-glass-primary">Guardar Cita</button>
+    </div>
   </form>
 
 </div>

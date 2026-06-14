@@ -1,0 +1,95 @@
+/* Glassmorphism base for cards and panels */
+.glass-panel {
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.06);
+	border-radius: 14px;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Header/title tweaks */
+.titulo-section h1 { color: #fff; }
+
+/* Estado badges */
+.estado-badge {
+	padding: 0.4rem 0.7rem;
+	border-radius: 999px;
+	font-weight: 600;
+	font-size: 0.85rem;
+	color: #fff;
+}
+.badge-cuidados {
+	background: rgba(220,53,69,0.16);
+	color: #fff6f6;
+	border: 1px solid rgba(220,53,69,0.28);
+}
+.badge-estable {
+	background: rgba(72,201,176,0.12);
+	color: #eafff2;
+	border: 1px solid rgba(72,201,176,0.18);
+}
+
+/* Botones estilo Glass */
+.btn-glass {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 10px;
+	padding: 0.375rem 0.75rem;
+	border: 1px solid rgba(255,255,255,0.06);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+	transition: transform .08s ease, box-shadow .15s ease, background .15s ease;
+	font-weight: 600;
+}
+
+/* Principal - turquesa/menta */
+.btn-glass-primary {
+	background: rgba(64,224,208,0.12);
+	color: rgba(3,60,55,0.95);
+	border: 1px solid rgba(64,224,208,0.28);
+}
+.btn-glass-primary:hover,
+.btn-glass-primary:focus { box-shadow: 0 8px 28px rgba(64,224,208,0.18), 0 0 8px rgba(64,224,208,0.12); transform: translateY(-1px); }
+
+/* Neutral - pizarra/gris humo */
+.btn-glass-neutral {
+	background: rgba(34,38,45,0.18);
+	color: #fff;
+	border: 1px solid rgba(255,255,255,0.06);
+}
+.btn-glass-neutral:hover,
+.btn-glass-neutral:focus { box-shadow: 0 8px 24px rgba(0,0,0,0.2), inset 0 0 24px rgba(255,255,255,0.02); transform: translateY(-1px); }
+
+/* Editar - ámbar/dorado sutil */
+.btn-glass-edit {
+	background: rgba(255,193,7,0.10);
+	color: rgba(60,40,0,0.95);
+	border: 1px solid rgba(255,193,7,0.26);
+}
+.btn-glass-edit:hover,
+.btn-glass-edit:focus { box-shadow: 0 8px 28px rgba(255,193,7,0.14); transform: translateY(-1px); }
+
+/* Eliminar - carmesí con glow en hover */
+.btn-glass-danger {
+	background: rgba(220,53,69,0.10);
+	color: #fff;
+	border: 1px solid rgba(220,53,69,0.22);
+}
+.btn-glass-danger:hover,
+.btn-glass-danger:focus { box-shadow: 0 10px 30px rgba(220,53,69,0.22), 0 0 18px rgba(220,53,69,0.12); transform: translateY(-1px); }
+
+/* Enlaces telefónicos con buen contraste */
+a[href^="tel:"] { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+/* Ajustes responsive */
+@media (max-width: 767.98px) {
+	.btn-glass { font-size: 0.95rem; padding: 0.35rem 0.6rem; }
+	.glass-panel { border-radius: 12px; }
+}
+
+/* Utilidades */
+.mascota-card { overflow: hidden; }
+

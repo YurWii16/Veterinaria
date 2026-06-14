@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Mascota, AtencionClinica, Especie } from '../models';
+import { Mascota, AtencionClinica, Especie, Perro, Gato, Ave, Exotico } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -34,35 +34,117 @@ export class MascotaService {
   }
 
   private deserializarMascota(data: any): Mascota {
-    const mascota = new Mascota(
+    const historialClinico = (data.historialClinico ?? []).map(
+      (h: any) =>
+        new AtencionClinica(
+          h.id,
+          new Date(h.fecha),
+          h.motivo,
+          h.diagnostico,
+          h.tratamiento,
+          h.veterinario,
+          h.notas
+        )
+    );
+
+    return this.fabricaMascota(
       data.id,
       data.nombre,
       data.especie,
       data.raza,
-      data.fechaNacimiento,
+      new Date(data.fechaNacimiento),
       data.pesoKg,
-      (data.historialClinico ?? []).map(
-        (h: any) =>
-          new AtencionClinica(
-            h.id,
-            h.fecha,
-            h.motivo,
-            h.diagnostico,
-            h.tratamiento,
-            h.veterinario,
-            h.notas
-          )
-      ),
+      historialClinico,
       data.duenoNombre,
       data.telefonoContacto,
       data.observaciones
     );
-    return mascota;
+  }
+
+  private fabricaMascota(
+    id: string,
+    nombre: string,
+    especie: Especie,
+    raza: string,
+    fechaNacimiento: Date,
+    pesoKg: number,
+    historialClinico: AtencionClinica[],
+    duenoNombre?: string,
+    telefonoContacto?: string,
+    observaciones?: string
+  ): Mascota {
+    switch (especie) {
+      case Especie.CANINO:
+        return new Perro(
+          id,
+          nombre,
+          especie,
+          raza,
+          fechaNacimiento,
+          pesoKg,
+          historialClinico,
+          duenoNombre,
+          telefonoContacto,
+          observaciones
+        );
+      case Especie.FELINO:
+        return new Gato(
+          id,
+          nombre,
+          especie,
+          raza,
+          fechaNacimiento,
+          pesoKg,
+          historialClinico,
+          duenoNombre,
+          telefonoContacto,
+          observaciones
+        );
+      case Especie.AVE:
+        return new Ave(
+          id,
+          nombre,
+          especie,
+          raza,
+          fechaNacimiento,
+          pesoKg,
+          historialClinico,
+          duenoNombre,
+          telefonoContacto,
+          observaciones
+        );
+      case Especie.EXOTICO:
+        return new Exotico(
+          id,
+          nombre,
+          especie,
+          raza,
+          fechaNacimiento,
+          pesoKg,
+          historialClinico,
+          duenoNombre,
+          telefonoContacto,
+          observaciones
+        );
+      default:
+        return new Perro(
+          id,
+          nombre,
+          especie,
+          raza,
+          fechaNacimiento,
+          pesoKg,
+          historialClinico,
+          duenoNombre,
+          telefonoContacto,
+          observaciones
+        );
+    }
   }
 
   private crearDatosInicial(): Mascota[] {
     const mascotasDefault = [
-      new Mascota(
+      new Perro(
         this.generarId(),
         'Firulais',
         Especie.CANINO,
@@ -82,7 +164,7 @@ export class MascotaService {
         'Juan Pérez',
         '+34 612345678'
       ),
-      new Mascota(
+      new Gato(
         this.generarId(),
         'Minina',
         Especie.FELINO,
@@ -133,12 +215,10 @@ export class MascotaService {
     return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  // ============= CRUD =============
-
   crear(mascota: Omit<Mascota, 'id'>): Observable<Mascota> {
     return new Observable((observer) => {
       try {
-        const mascotaConId = new Mascota(
+        const mascotaConId = this.fabricaMascota(
           this.generarId(),
           mascota.nombre,
           mascota.especie,
@@ -188,7 +268,7 @@ export class MascotaService {
         }
 
         const mascotaActual = mascotasActuales[indice];
-        const mascotaActualizada = new Mascota(
+        const mascotaActualizada = this.fabricaMascota(
           mascotaActual.id,
           cambios.nombre ?? mascotaActual.nombre,
           cambios.especie ?? mascotaActual.especie,
@@ -242,8 +322,6 @@ export class MascotaService {
       }
     });
   }
-
-  // ============= BÚSQUEDA Y FILTRADO =============
 
   buscarPorNombre(nombre: string): Observable<Mascota[]> {
     return new Observable((observer) => {
@@ -327,8 +405,6 @@ export class MascotaService {
       observer.complete();
     });
   }
-
-  // ============= UTILIDADES =============
 
   obtenerTotal(): Observable<number> {
     return new Observable((observer) => {

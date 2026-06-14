@@ -1,0 +1,34 @@
+/* Glass panel for cita form */
+.glass-panel {
+	background: rgba(255,255,255,0.04);
+	border: 1px solid rgba(255,255,255,0.06);
+	border-radius: 12px;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* Buttons glass (same palette que mascotas) */
+.btn-glass {
+	border-radius: 10px;
+	padding: 0.45rem 0.9rem;
+	border: 1px solid rgba(255,255,255,0.06);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+	font-weight: 600;
+}
+.btn-glass-primary {
+	background: rgba(64,224,208,0.12);
+	color: rgba(3,60,55,0.95);
+	border: 1px solid rgba(64,224,208,0.28);
+}
+.btn-glass-neutral {
+	background: rgba(34,38,45,0.18);
+	color: #fff;
+	border: 1px solid rgba(255,255,255,0.06);
+}
+
+@media (max-width: 767.98px) {
+	.btn-glass { width: 100%; }
+}

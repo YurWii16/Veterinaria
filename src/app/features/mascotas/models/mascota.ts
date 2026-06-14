@@ -1,7 +1,7 @@
 import { AtencionClinica } from './atencion-clinica';
 import { Especie } from './especie.enum';
 
-export class Mascota {
+export abstract class Mascota {
   id: string;
   nombre: string;
   especie: Especie;
@@ -39,6 +39,8 @@ export class Mascota {
     this.telefonoContacto = telefonoContacto;
     this.observaciones = observaciones;
   }
+
+  abstract requiereCuidadosEspeciales(): boolean;
 
   calcularEdad(): number {
     const hoy = new Date();
