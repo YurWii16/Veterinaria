@@ -1,11 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Routes } from '@angular/router';
+import { CitasComponent } from './pages/citas/citas.component';
 
-import { CitasRoutingModule } from './citas-routing-module';
-import { CitasPlaceholder } from './pages/citas-placeholder/citas-placeholder';
+// Definición de rutas del módulo
+const routes: Routes = [
+  { path: '', component: CitasComponent }
+];
 
 @NgModule({
-  declarations: [CitasPlaceholder],
-  imports: [CommonModule, CitasRoutingModule],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    CitasComponent // Componente standalone
+  ]
 })
 export class CitasModule {}

@@ -17,6 +17,8 @@ export class AppointmentStatusPipe implements PipeTransform {
         return 'Completada';
       case 'cancelada':
         return 'Cancelada';
+      case 'en espera':
+        return 'En Espera';
       default:
         return value.charAt(0).toUpperCase() + value.slice(1);
     }

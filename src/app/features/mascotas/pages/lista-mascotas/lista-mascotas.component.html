@@ -9,48 +9,38 @@
         </div>
       </div>
       <div class="col-md-4 text-md-end">
-        <a routerLink="crear" class="btn btn-primary btn-lg px-5">
+        <a routerLink="crear" class="btn btn-glass btn-glass-primary btn-lg px-4">
           <span class="me-2">➕</span> Registrar Mascota
         </a>
       </div>
     </div>
   </div>
 
-  <!-- Filtros Section -->
-  <div class="filtros-section glass-panel p-5 mb-5">
-    <h5 class="fw-bold text-light mb-4">🔎 Filtrar Pacientes</h5>
-    <div class="row g-4">
-      <div class="col-lg-4 col-md-6">
-        <div class="form-group">
-          <label for="buscador" class="form-label fw-500">Buscar por nombre</label>
-          <input
-            type="text"
-            id="buscador"
-            class="form-control"
-            [formControl]="buscadorControl"
-            placeholder="Ej: Firulais, Minina..."
-          />
-        </div>
+  <!-- FILTROS HORIZONTALES -->
+  <div class="filtros-section glass-panel p-4 mb-5">
+    <h5 class="fw-bold text-light mb-3">🔎 Filtrar Pacientes</h5>
+    <div class="row g-3 align-items-end">
+      <div class="col-md-4">
+        <label for="buscador" class="form-label fw-500">Buscar por nombre</label>
+        <input
+          type="text"
+          id="buscador"
+          class="form-control"
+          [formControl]="buscadorControl"
+          placeholder="Ej: Firulais, Minina..."
+        />
       </div>
 
-      <div class="col-lg-4 col-md-6">
-        <div class="form-group">
-          <label for="especie" class="form-label fw-500">Especie</label>
-          <select
-            id="especie"
-            class="form-select"
-            [formControl]="especieControl"
-          >
-            <option value="">Todas las especies</option>
-            <option *ngFor="let esp of especies" [value]="esp">
-              {{ EspecieLabel[esp] }}
-            </option>
-          </select>
-        </div>
+      <div class="col-md-4">
+        <label for="especie" class="form-label fw-500">Especie</label>
+        <select id="especie" class="form-select" [formControl]="especieControl">
+          <option value="">Todas las especies</option>
+          <option *ngFor="let esp of especies" [value]="esp">{{ EspecieLabel[esp] }}</option>
+        </select>
       </div>
 
-      <div class="col-lg-4 col-md-6">
-        <div class="form-group">
+      <div class="col-md-4 d-flex gap-2">
+        <div class="w-100">
           <label for="dueno" class="form-label fw-500">Dueño</label>
           <input
             type="text"
@@ -60,133 +50,77 @@
             placeholder="Nombre del dueño"
           />
         </div>
-      </div>
-    </div>
 
-    <div class="row mt-4">
-      <div class="col-12">
-        <button
-          type="button"
-          class="btn btn-secondary btn-sm px-3"
-          (click)="limpiarFiltros()"
-        >
-          ✕ Limpiar filtros
-        </button>
+        <div class="d-flex flex-column justify-content-end align-items-end">
+          <button type="button" class="btn btn-glass btn-glass-neutral mb-2" (click)="limpiarFiltros()">✕ Limpiar</button>
+          <a routerLink="crear" class="btn btn-glass btn-glass-primary">➕ Registrar</a>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Lista de mascotas - Grid -->
-  <div class="mascotas-grid">
-    <ng-container *ngIf="mascotasFiltradas.length > 0; else noResultados">
-      <div
-        class="mascota-card glass-panel"
-        *ngFor="let mascota of mascotasFiltradas"
-      >
-        <!-- Card Header -->
-        <div class="card-header d-flex justify-content-between align-items-start mb-3">
-          <div>
-            <h3 class="mascota-nombre h5 fw-bold mb-0">{{ mascota.nombre }}</h3>
-            <small class="text-muted">ID: {{ mascota.id | slice:0:8 }}...</small>
-          </div>
-          <span class="badge" [ngClass]="'badge-' + obtenerEstadoColor(mascota)">
-            {{ mascota.obtenerEstadoSalud() | uppercase }}
-          </span>
-        </div>
+  <!-- LISTA: tarjetas en 2 columnas -->
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col" *ngFor="let mascota of mascotasFiltradas">
+      <div class="card glass-panel h-100">
+        <div class="card-body p-4">
+          <div class="row">
+            <!-- Izquierda: datos clínicos -->
+            <div class="col-md-6">
+              <h5 class="card-title mb-2">{{ mascota.nombre }}</h5>
+              <p class="mb-1"><strong>Raza:</strong> {{ mascota.raza || '—' }}</p>
+              <p class="mb-1"><strong>Edad:</strong> {{ mascota.calcularEdad() }}</p>
+              <p class="mb-1"><strong>Peso:</strong> {{ mascota.pesoKg ? (mascota.pesoKg + ' kg') : '—' }}</p>
+              <p class="mb-0 text-muted small">ID: {{ mascota.id | slice:0:8 }}...</p>
+            </div>
 
-        <!-- Card Body -->
-        <div class="card-body p-0 mb-4">
-          <div class="info-grid row g-2">
-            <div class="info-item col-sm-6">
-              <span class="label fw-500 text-muted small">Especie:</span>
-              <span class="value d-block">{{ EspecieLabel[mascota.especie] }}</span>
-            </div>
-            <div class="info-item col-sm-6">
-              <span class="label fw-500 text-muted small">Raza:</span>
-              <span class="value d-block">{{ mascota.raza }}</span>
-            </div>
-            <div class="info-item col-sm-6">
-              <span class="label fw-500 text-muted small">Edad:</span>
-              <span class="value d-block">{{ mascota.obtenerDescripcionEdad() }}</span>
-            </div>
-            <div class="info-item col-sm-6">
-              <span class="label fw-500 text-muted small">Peso:</span>
-              <span class="value d-block">{{ mascota.pesoKg }} kg</span>
-            </div>
-            <div class="info-item col-12" *ngIf="mascota.duenoNombre">
-              <span class="label fw-500 text-muted small">Dueño:</span>
-              <span class="value d-block">{{ mascota.duenoNombre }}</span>
-            </div>
-            <div class="info-item col-12" *ngIf="mascota.telefonoContacto">
-              <span class="label fw-500 text-muted small">Teléfono:</span>
-              <span class="value d-block">
-                <a href="tel:{{ mascota.telefonoContacto }}" class="text-info">
-                  {{ mascota.telefonoContacto }}
-                </a>
-              </span>
+            <!-- Derecha: contacto y estado -->
+            <div class="col-md-6 d-flex flex-column justify-content-between">
+              <div>
+                <p class="mb-1"><strong>Dueño:</strong> {{ mascota.duenoNombre || '—' }}</p>
+                <p class="mb-2">
+                  <a class="text-decoration-none" [href]="'tel:' + (mascota.telefonoContacto || '')">
+                    {{ mascota.telefonoContacto || '—' }}
+                  </a>
+                </p>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge estado-badge" [ngClass]="'badge-' + obtenerEstadoColor(mascota)">
+                  {{ mascota.requiereCuidadosEspeciales() ? 'Requiere cuidados' : (mascota.obtenerEstadoSalud() | uppercase) }}
+                </span>
+
+                <div class="btn-group" role="group" aria-label="Acciones">
+                  <a [routerLink]="[mascota.id]" class="btn btn-glass btn-glass-neutral btn-sm">👁️ Detalles</a>
+                  <a [routerLink]="['editar', mascota.id]" class="btn btn-glass btn-glass-edit btn-sm">✏️ Editar</a>
+                  <button type="button" class="btn btn-glass btn-glass-danger btn-sm" (click)="eliminarMascota(mascota.id, mascota.nombre)">🗑️ Eliminar</button>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Historial Preview -->
-          <div class="historial-preview mt-4 pt-3 border-top border-secondary" *ngIf="mascota.historialClinico.length > 0">
-            <div class="d-flex align-items-center mb-2">
-              <span class="fw-500 small text-muted">📋 Última visita:</span>
-            </div>
-            <p class="mb-0 small">
-              {{ mascota.obtenerUltimaAtencion()?.obtenerResumen() }}
-            </p>
-          </div>
-
-          <div class="historial-preview vacio mt-4 pt-3 border-top border-secondary" *ngIf="mascota.historialClinico.length === 0">
-            <p class="mb-0 small text-muted">⚠️ Sin historial médico registrado</p>
-          </div>
-        </div>
-
-        <!-- Card Footer - Action Buttons -->
-        <div class="card-footer border-top border-secondary d-flex gap-2 justify-content-between flex-wrap">
-          <a
-            [routerLink]="[mascota.id]"
-            class="btn btn-sm btn-info glass-panel-hover px-3"
-            title="Ver detalles completos"
-          >
-            👁️ Detalles
-          </a>
-          <a
-            [routerLink]="['editar', mascota.id]"
-            class="btn btn-sm btn-warning glass-panel-hover px-3"
-            title="Editar información"
-          >
-            ✏️ Editar
-          </a>
-          <button
-            type="button"
-            class="btn btn-sm btn-danger glass-panel-hover px-3"
-            (click)="eliminarMascota(mascota.id, mascota.nombre)"
-            title="Eliminar mascota"
-          >
-            🗑️ Eliminar
-          </button>
-        </div>
-      </div>
-    </ng-container>
-
-    <!-- Empty State -->
-    <ng-template #noResultados>
-      <div class="sin-resultados">
-        <div class="empty-state glass-panel p-5 text-center">
-          <p class="emoji display-1">🔍</p>
-          <h3 class="h5 fw-bold mt-3">No se encontraron mascotas</h3>
-          <p class="text-muted mb-4" *ngIf="totalMascotas > 0">
-            Intenta cambiar los criterios de búsqueda o limpiar los filtros
-          </p>
-          <div *ngIf="totalMascotas === 0">
-            <p class="text-muted mb-4">Aún no hay pacientes registrados en el sistema</p>
-            <a routerLink="crear" class="btn btn-primary btn-lg px-4">
-              <span class="me-2">➕</span> Registra la primera mascota
-            </a>
+          <!-- Historial compactado -->
+          <div class="mt-3 pt-3 border-top border-secondary" *ngIf="mascota.historialClinico.length > 0">
+            <small class="text-muted">📋 Última visita:</small>
+            <p class="mb-0 small">{{ mascota.obtenerUltimaAtencion()?.obtenerResumen() ?? 'Sin atenciones registradas' }}</p>
           </div>
         </div>
       </div>
-    </ng-template>
+    </div>
   </div>
+
+  <!-- Empty state -->
+  <ng-template #noResultados>
+    <div class="sin-resultados">
+      <div class="empty-state glass-panel p-4 text-center">
+        <p class="emoji display-1">🔍</p>
+        <h3 class="h5 fw-bold mt-3">No se encontraron mascotas</h3>
+        <p class="text-muted mb-4" *ngIf="totalMascotas > 0">Intenta cambiar los criterios de búsqueda o limpiar los filtros</p>
+        <div *ngIf="totalMascotas === 0">
+          <p class="text-muted mb-4">Aún no hay pacientes registrados en el sistema</p>
+          <a routerLink="crear" class="btn btn-glass btn-glass-primary btn-lg px-4">➕ Registra la primera mascota</a>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </div>

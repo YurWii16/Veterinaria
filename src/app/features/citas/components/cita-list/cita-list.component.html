@@ -1,0 +1,66 @@
+<div class="glass-panel p-4">
+  <h3 class="mb-3">Agenda de Citas</h3>
+
+  <div *ngIf="citas.length === 0" class="text-muted" style="font-size: 0.95rem;">
+    No hay citas registradas.
+  </div>
+
+  <div 
+    *ngFor="let cita of citas" 
+    [appHighlightUpcoming]="cita.fecha" 
+    class="glass-panel-hover p-3 mb-3 appt-card-item"
+    style="position: relative;"
+  >
+    <div class="d-flex justify-between align-items-center mb-2" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+      <strong style="font-size: 1.1rem; color: var(--text-primary);">🐾 {{ cita.mascota }}</strong>
+      <span class="badge" 
+            [class.badge-warning]="cita.estado === 'pendiente'" 
+            [class.badge-success]="cita.estado === 'completada'"
+            [class.badge-info]="cita.estado === 'en espera'"
+            [class.badge-danger]="cita.estado === 'cancelada'">
+        {{ cita.estado | appointmentStatus }}
+      </span>
+    </div>
+
+    <div class="mb-1" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.25rem;">👤 Dueño: <strong>{{ cita.dueno }}</strong></div>
+    <div class="mb-1" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.25rem;">👨‍⚕️ Veterinario: {{ cita.veterinario }}</div>
+    <div class="mb-1" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.25rem;">📅 Fecha: {{ cita.fecha | dateFormat }}</div>
+    <div class="mb-1" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.25rem;">⏰ Hora: {{ cita.hora }}</div>
+    <div class="mb-2" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">📝 Motivo: {{ cita.motivo }}</div>
+
+    <!-- Acciones de estado -->
+    <div class="d-flex gap-2 mb-2" style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+      <button 
+        *ngIf="cita.estado === 'pendiente' || cita.estado === 'en espera'" 
+        class="btn btn-primary" 
+        style="padding: 0.35rem 0.75rem; font-size: 0.8rem; height: auto;" 
+        (click)="cambiarEstado.emit({id: cita.id, estado: 'completada'})"
+      >
+        ✔️ Confirmar Atención
+      </button>
+      
+      <button 
+        *ngIf="cita.estado === 'pendiente'" 
+        class="btn btn-secondary" 
+        style="padding: 0.35rem 0.75rem; font-size: 0.8rem; height: auto;" 
+        (click)="cambiarEstado.emit({id: cita.id, estado: 'en espera'})"
+      >
+        ⏳ Poner en Espera
+      </button>
+
+      <button 
+        *ngIf="cita.estado === 'pendiente' || cita.estado === 'en espera'" 
+        class="btn btn-danger" 
+        style="padding: 0.35rem 0.75rem; font-size: 0.8rem; height: auto; background: linear-gradient(135deg, #ef4444, #b91c1c); box-shadow: none;" 
+        (click)="cambiarEstado.emit({id: cita.id, estado: 'cancelada'})"
+      >
+        ❌ Cancelar Cita
+      </button>
+    </div>
+
+    <!-- Botón de eliminación física -->
+    <button class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; height: auto; border-color: rgba(255, 255, 255, 0.15);" (click)="eliminar.emit(cita.id)">
+      Eliminar Registro
+    </button>
+  </div>
+</div>

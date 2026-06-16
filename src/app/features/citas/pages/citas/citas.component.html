@@ -1,0 +1,12 @@
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Sistema de Citas Veterinarias</h2>
+
+  <app-cita-form (nuevaCita)="agregarCita($event)"></app-cita-form>
+
+  <app-cita-list 
+    [citas]="citas" 
+    (eliminar)="eliminarCita($event)"
+    (cambiarEstado)="cambiarEstadoCita($event)"
+  >
+  </app-cita-list>
+</div>

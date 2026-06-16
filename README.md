@@ -1,111 +1,88 @@
-# VetVibe - Sistema de Gestión de Clínica Veterinaria
+# VetVibe - Sistema de Gestion de Clinica Veterinaria
 
-VetVibe es una aplicación web responsiva y premium desarrollada en **Angular** y **TypeScript** diseñada para digitalizar la atención médica y administrativa de una clínica veterinaria. El sistema implementa un diseño oscuro moderno con estética **Glassmorphic** (paneles translúcidos con desenfoque y resplandor de fondo) y una paleta de colores verde menta, turquesa (teal) y pizarra (slate).
-
----
-
-## 📋 Estructura de Módulo y División del Trabajo
-
-El proyecto utiliza una **arquitectura modular en Angular** basada en `@NgModule` para segmentar las responsabilidades y permitir el trabajo en paralelo de hasta 3 integrantes:
-
-### Mapeo de Módulos
-```text
-src/app/
-├── core/                  # [INTEGRANTE 1] Servicios globales de datos y guards
-│   ├── guards/            # authGuard (protección de rutas privadas)
-│   └── services/          # AuthService (simulación de sesión)
-├── shared/                # [INTEGRANTE 1] Componentes comunes, directivas y pipes
-│   ├── directives/        # HighlightUpcomingDirective (resaltado de citas urgentes)
-│   ├── pipes/             # DateFormatPipe y AppointmentStatusPipe
-│   └── components/        # Layout principal, Header, Sidebar y DashboardHome (vista de inicio)
-├── features/
-│   ├── auth/              # [INTEGRANTE 1] Pantalla de Login reactiva
-│   ├── mascotas/          # [INTEGRANTE 2] Registro, lista de mascotas e historial clínico
-│   └── citas/             # [INTEGRANTE 3 / TÚ] Calendario de agenda y reserva de citas
-```
+VetVibe es una aplicacion web responsiva desarrollada en Angular y TypeScript diseñada para digitalizar la atencion medica y administrativa de una clinica veterinaria. El sistema implementa un diseño oscuro moderno con estetica Glassmorphic (paneles translucidos con desenfoque y resplandor de fondo) y una paleta de colores verde menta, turquesa (teal) y pizarra (slate).
 
 ---
 
-## 🛠️ Instalación y Ejecución Local
+## Estructura de Modulo y Division del Trabajo
+
+El proyecto utiliza una arquitectura modular en Angular basada en NgModule para segmentar las responsabilidades y permitir el trabajo en paralelo:
+
+### Mapeo de Modulos
+*   src/app/core/
+    Módulo Core: Contiene servicios globales de datos y guards.
+    - core/guards/auth.ts (Proteccion de rutas mediante guardias de navegacion).
+    - core/services/auth.ts (Gestion y simulacion de inicio de sesion de empleados).
+
+*   src/app/shared/
+    Módulo Shared: Componentes comunes, directivas y pipes compartidos.
+    - shared/components/layout/ (Diseño general con Sidebar y Header responsivos).
+    - shared/components/dashboard-home/ (Panel de control principal con estadisticas y listado de citas).
+    - shared/directives/highlight-upcoming.ts (Directiva para resaltar citas urgentes).
+    - shared/pipes/date-format.ts (Pipe para formato legible de fechas en español).
+    - shared/pipes/appointment-status.ts (Pipe para badges de estado de cita traducidos).
+
+*   src/app/features/
+    Módulo Features: Contiene los modulos especificos de las funcionalidades de negocio, cargados diferidamente (Lazy Loading).
+    - features/auth/ (Modulo de autenticacion y Login reactivo).
+    - features/mascotas/ (Modulo de registro, listado, buscador y ficha medica de mascotas).
+    - features/citas/ (Modulo de agenda de citas con gestion de estados y control de colisiones).
+
+---
+
+## Instalacion y Ejecucion Local
 
 ### Prerrequisitos
-*   **Node.js**: Versión 18.x o superior.
-*   **NPM**: Versión 9.x o superior.
+*   Node.js: Version 18.x o superior.
+*   NPM: Version 9.x o superior.
 
 ### Pasos para Ejecutar
-1.  **Clonar o descargar** el repositorio en tu máquina local.
-2.  Navegar a la carpeta raíz del proyecto:
+1.  Clonar o descargar el repositorio en tu maquina local.
+2.  Navegar a la carpeta raiz del proyecto:
     ```bash
-    cd veterinary-clinic-app
+    cd veterinaria-git
     ```
-3.  **Instalar dependencias**:
+3.  Instalar dependencias del proyecto:
     ```bash
     npm install
     ```
-4.  **Iniciar el servidor de desarrollo**:
+4.  Iniciar el servidor de desarrollo local:
     ```bash
     npm start
     ```
-5.  Abrir en el navegador [http://localhost:4200/](http://localhost:4200/).
+5.  Abrir en el navegador la direccion http://localhost:4200.
 
 ---
 
-## 🔐 Credenciales de Acceso para Pruebas
-Para ingresar al panel de control, utiliza cualquiera de las siguientes credenciales (la contraseña es la misma para todas):
+## Credenciales de Acceso para Pruebas
+Para ingresar al panel de control, utilice cualquiera de las siguientes credenciales (la contraseña es la misma para todas):
 
-*   **Administrador**: `admin@vetvibe.com` / `password123`
-*   **Veterinaria**: `vet.sofia@vetvibe.com` / `password123`
+*   Administrador: admin@vetvibe.com / password123
+*   Veterinaria: vet.sofia@vetvibe.com / password123
 
-*Nota: El campo de correo electrónico requiere validación reactiva de formato y debe pertenecer obligatoriamente al dominio `@vetvibe.com`.*
+Nota: El campo de correo electronico requiere validacion reactiva de formato y debe pertenecer obligatoriamente al dominio @vetvibe.com.
 
 ---
 
-## 🚀 Guía para los Integrantes del Equipo
+## Funcionalidades e Implementacion Tecnica
 
-### 👤 Para el Integrante 2 (Módulo de Mascotas)
-Tu trabajo se concentra en la carpeta `src/app/features/mascotas/`.
-Ya tienes generadas las rutas del módulo en `mascotas-routing-module.ts` y el módulo registrado en `mascotas-module.ts`.
+### 1. Programacion Orientada a Objetos en TypeScript
+El modelado de datos de las mascotas implementa clases de TypeScript para representar de forma logica el comportamiento animal mediante clases abstractas, herencia y polimorfismo:
+*   Clase abstracta Mascota que define propiedades comunes y el metodo abstracto requiereCuidadosEspeciales().
+*   Clases concretas Perro, Gato, Ave y Exotico que extienden de Mascota e implementan el metodo requiereCuidadosEspeciales() con reglas de negocio personalizadas segun peso, edad o historial clinico.
 
-1.  **Crear Interfaces**: Puedes definir las interfaces de Mascota en `src/app/core/models/` o directamente en tu módulo.
-2.  **Servicios**: Implementa un servicio (`MascotaService`) para guardar, listar y editar mascotas en `LocalStorage` para que tus cambios se guarden.
-3.  **Vistas a Desarrollar**:
-    *   **Formulario de Registro**: Reemplaza el componente `MascotasPlaceholder` o crea uno nuevo de tipo formulario usando `ReactiveFormsModule` (que ya está importado globalmente).
-    *   **Historial Clínico**: Muestra una línea de tiempo (timeline) del paciente. Puedes usar el componente del listado principal para hacer la búsqueda de la mascota.
+### 2. Validaciones con ReactiveForms
+Utilizacion de ReactiveFormsModule para garantizar la integridad de la entrada de datos:
+*   Validaciones de formato de correo electronico en la pantalla de Login.
+*   Formulario de Citas que autocompleta el dueño al seleccionar la mascota en un selector desplegable, previniendo errores de asociacion.
 
-### 👤 Para el Integrante 3 (Módulo de Citas y Agenda)
-Tu trabajo se concentra en la carpeta `src/app/features/citas/`.
-Ya tienes configuradas las rutas base del módulo en `citas-routing-module.ts`.
+### 3. Persistencia de Datos
+Uso de LocalStorage a traves de los servicios de Angular (MascotaService y CitaService) para almacenar y persistir los registros clinicos y la agenda de citas de forma local en el navegador del cliente.
 
-1.  **Diseño de la Agenda**: Reemplaza el componente `CitasPlaceholder` e implementa la vista de calendario semanal/diario.
-2.  **Lógica de Reservas**: Diseña el formulario reactivo de agendado (donde se selecciona Mascota y Veterinario).
-3.  **Regla de Negocio (Colisiones)**: En tu servicio (`CitaService`), asegúrate de escribir la validación de fecha y hora:
-    ```typescript
-    // Ejemplo de validación conceptual
-    const existeCruce = citasExistentes.some(c => 
-      c.veterinario === nuevaCita.veterinario && 
-      c.fecha === nuevaCita.fecha
-    );
-    if (existeCruce) {
-      throw new Error("El veterinario seleccionado ya tiene una cita en ese horario.");
-    }
-    ```
+### 4. Lógica de Colision de Horarios
+El sistema previene la sobre-programacion de los medicos veterinarios en CitaService. Al intentar registrar una cita en una fecha y hora especifica con un veterinario que ya tiene una cita asignada en ese bloque, la aplicacion bloquea la transaccion y muestra una alerta visual de conflicto de agenda.
 
-### 💎 Reutilización de Utilidades Compartidas (Shared)
-Todos los componentes creados en los módulos de Mascotas y Citas pueden utilizar directamente:
-*   **DateFormatPipe (`dateFormat`)**: Formatea fechas ISO o tipo Date.
-    ```html
-    <p>Fecha: {{ cita.fecha | dateFormat }}</p> <!-- Muestra: Sábado, 6 de Jun - 02:00 PM -->
-    ```
-*   **AppointmentStatusPipe (`appointmentStatus`)**: Traduce estados internos (`pendiente`, `completada`, `cancelada`) a español con formato capitalized.
-    ```html
-    <span class="badge" [class.badge-success]="cita.estado === 'completada'">
-      {{ cita.estado | appointmentStatus }}
-    </span>
-    ```
-*   **HighlightUpcomingDirective (`appHighlightUpcoming`)**: Resalta elementos cuyas fechas estén dentro de las próximas 24 horas.
-    ```html
-    <div [appHighlightUpcoming]="cita.fecha" class="glass-panel">
-      <!-- El panel obtendrá un borde brillante si la cita ocurre pronto -->
-    </div>
-    ```
-*   **Estilos y Layouts**: Las clases utilitarias de estilos en `styles.css` como `.glass-panel`, `.glass-panel-hover`, `.form-control`, `.btn-primary` y `.btn-secondary` están disponibles globalmente en toda la aplicación.
+### 5. Elementos Avanzados de Angular (Pipes y Directivas)
+*   DateFormatPipe (date-format.ts): Transforma las fechas en formato ISO a una lectura legible en español (ej. Lunes, 15 de Jun - 10:00 AM).
+*   AppointmentStatusPipe (appointment-status.ts): Traduce y da formato a los estados de las citas (pendiente, en espera, completada, cancelada).
+*   HighlightUpcomingDirective (highlight-upcoming.ts): Añade dinamicamente la clase de resplandor upcoming-highlight a las tarjetas en el DOM si la cita ocurre dentro de las próximas 24 horas.
