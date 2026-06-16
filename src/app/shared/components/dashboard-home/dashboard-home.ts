@@ -1,15 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, User } from '../../../core/services/auth';
-
-interface CitaMock {
-  mascota: string;
-  especie: string;
-  propietario: string;
-  fecha: Date;
-  motivo: string;
-  veterinario: string;
-  estado: string;
-}
+import { MascotaService } from '../../../features/mascotas/services/mascota.service';
+import { CitaService } from '../../../features/citas/services/cita.service';
+import { Mascota } from '../../../features/mascotas/models';
+import { Cita } from '../../../features/citas/models/cita.model';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -20,61 +14,55 @@ interface CitaMock {
 export class DashboardHome implements OnInit {
   currentUser: User | null = null;
   
-  // Mock statistics
+  // Real statistics linked to services
   stats = {
-    totalMascotas: 142,
-    citasHoy: 3,
-    citasCompletadas: 1,
-    alertasUrgentes: 2
+    totalMascotas: 0,
+    citasHoy: 0,
+    citasCompletadas: 0,
+    alertasUrgentes: 0
   };
 
-  // Mock appointments to test DateFormatPipe, AppointmentStatusPipe and HighlightUpcomingDirective
-  citasHoy: CitaMock[] = [];
+  mascotas: Mascota[] = [];
+  citasHoy: Cita[] = [];
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private mascotaService: MascotaService,
+    private citaService: CitaService
+  ) {}
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
     });
 
-    const now = new Date();
-    
-    // Appointment 1: in 3 hours (should highlight)
-    const time1 = new Date(now.getTime() + 3 * 60 * 60 * 1000);
-    // Appointment 2: in 18 hours (should highlight)
-    const time2 = new Date(now.getTime() + 18 * 60 * 60 * 1000);
-    // Appointment 3: 4 hours ago (past, completed, should NOT highlight)
-    const time3 = new Date(now.getTime() - 4 * 60 * 60 * 1000);
+    // Fetch live pets
+    this.mascotaService.obtenerTodas().subscribe(list => {
+      this.mascotas = list;
+      this.stats.totalMascotas = list.length;
+      this.recalculateStats();
+    });
 
-    this.citasHoy = [
-      {
-        mascota: 'Max',
-        especie: 'Perro',
-        propietario: 'Carlos Mendoza',
-        fecha: time1,
-        motivo: 'Control de vacunas anuales',
-        veterinario: 'Dra. Sofía Martínez',
-        estado: 'pendiente'
-      },
-      {
-        mascota: 'Luna',
-        especie: 'Gato',
-        propietario: 'María Delgado',
-        fecha: time2,
-        motivo: 'Revisión por decaimiento',
-        veterinario: 'Dr. Alejandro Bela',
-        estado: 'pendiente'
-      },
-      {
-        mascota: 'Toby',
-        especie: 'Perro',
-        propietario: 'Roberto Silva',
-        fecha: time3,
-        motivo: 'Limpieza dental de rutina',
-        veterinario: 'Dr. Alejandro Bela',
-        estado: 'completada'
-      }
-    ];
+    // Fetch live appointments
+    this.citasHoy = this.citaService.getCitas();
+    this.stats.citasHoy = this.citasHoy.length;
+    this.recalculateStats();
+  }
+
+  private recalculateStats(): void {
+    const now = new Date().getTime();
+    
+    this.stats.citasCompletadas = this.citasHoy.filter(c => c.estado === 'completada').length;
+    
+    this.stats.alertasUrgentes = this.citasHoy.filter(c => {
+      const diffMs = new Date(c.fecha).getTime() - now;
+      // Urgent if pending and scheduled in the next 24 hours
+      return c.estado === 'pendiente' && diffMs > 0 && diffMs <= 24 * 60 * 60 * 1000;
+    }).length;
+  }
+
+  getEspecieMascota(nombreMascota: string): string {
+    const mascota = this.mascotas.find(m => m.nombre.toLowerCase() === nombreMascota.toLowerCase());
+    return mascota ? mascota.especie : 'Mascota';
   }
 }

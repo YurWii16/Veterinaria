@@ -5,6 +5,6 @@ export interface Cita {
   fecha: Date;
   hora: string;
   motivo: string;
-  estado: 'pendiente' | 'completada';
+  estado: 'pendiente' | 'completada' | 'cancelada' | 'en espera';
   veterinario: string;
 }

@@ -100,10 +100,10 @@
                 <div class="flex-grow-1">
                   <div class="d-flex align-items-center mb-2">
                     <h3 class="h5 fw-bold mb-0">{{ cita.mascota }}</h3>
-                    <span class="pet-species badge bg-info text-dark ms-2 small">{{ cita.especie }}</span>
+                    <span class="pet-species badge bg-info text-dark ms-2 small">{{ getEspecieMascota(cita.mascota) }}</span>
                   </div>
                   <p class="owner-text text-muted small mb-2">
-                    <strong>Dueño:</strong> {{ cita.propietario }}
+                    <strong>Dueño:</strong> {{ cita.dueno }}
                   </p>
                   <p class="motive-text text-muted small mb-0">
                     <strong>Motivo:</strong> {{ cita.motivo }}
