@@ -10,23 +10,23 @@ El proyecto utiliza una arquitectura modular en Angular basada en NgModule para 
 
 ### Mapeo de Modulos
 *   src/app/core/
-    Módulo Core: Contiene servicios globales de datos y guards.
+    Modulo Core: Contiene servicios globales de datos y guards.
     - core/guards/auth.ts (Proteccion de rutas mediante guardias de navegacion).
     - core/services/auth.ts (Gestion y simulacion de inicio de sesion de empleados).
 
 *   src/app/shared/
-    Módulo Shared: Componentes comunes, directivas y pipes compartidos.
+    Modulo Shared: Componentes comunes, directivas y pipes compartidos.
     - shared/components/layout/ (Diseño general con Sidebar y Header responsivos).
     - shared/components/dashboard-home/ (Panel de control principal con estadisticas y listado de citas).
     - shared/directives/highlight-upcoming.ts (Directiva para resaltar citas urgentes).
-    - shared/pipes/date-format.ts (Pipe para formato legible de fechas en español).
+    - shared/pipes/date-format.ts (Pipe para formato legible de fechas en espanol).
     - shared/pipes/appointment-status.ts (Pipe para badges de estado de cita traducidos).
 
 *   src/app/features/
-    Módulo Features: Contiene los modulos especificos de las funcionalidades de negocio, cargados diferidamente (Lazy Loading).
+    Modulo Features: Contiene los modulos especificos de las funcionalidades de negocio, cargados diferidamente (Lazy Loading).
     - features/auth/ (Modulo de autenticacion y Login reactivo).
-    - features/mascotas/ (Modulo de registro, listado, buscador y ficha medica de mascotas).
-    - features/citas/ (Modulo de agenda de citas con gestion de estados y control de colisiones).
+    - features/mascotas/ (Modulo de registro, listado, buscador, edicion y ficha medica de mascotas).
+    - features/citas/ (Modulo de agenda de citas con gestion de estados, comprobantes de impresion y control de colisiones).
 
 ---
 
@@ -39,23 +39,23 @@ El proyecto utiliza una arquitectura modular en Angular basada en NgModule para 
 ### Pasos para Ejecutar
 1.  Clonar o descargar el repositorio en tu maquina local.
 2.  Navegar a la carpeta raiz del proyecto:
-    ```bash
+    bash
     cd veterinaria-git
-    ```
+    
 3.  Instalar dependencias del proyecto:
-    ```bash
+    bash
     npm install
-    ```
+    
 4.  Iniciar el servidor de desarrollo local:
-    ```bash
+    bash
     npm start
-    ```
+    
 5.  Abrir en el navegador la direccion http://localhost:4200.
 
 ---
 
 ## Credenciales de Acceso para Pruebas
-Para ingresar al panel de control, utilice cualquiera de las siguientes credenciales (la contraseña es la misma para todas):
+Para ingresar al panel de control, utilice cualquiera de las siguientes credenciales (la contrasena es la misma para todas):
 
 *   Administrador: admin@vetvibe.com / password123
 *   Veterinaria: vet.sofia@vetvibe.com / password123
@@ -74,15 +74,22 @@ El modelado de datos de las mascotas implementa clases de TypeScript para repres
 ### 2. Validaciones con ReactiveForms
 Utilizacion de ReactiveFormsModule para garantizar la integridad de la entrada de datos:
 *   Validaciones de formato de correo electronico en la pantalla de Login.
-*   Formulario de Citas que autocompleta el dueño al seleccionar la mascota en un selector desplegable, previniendo errores de asociacion.
+*   Formulario de Citas con entradas manuales y selectores reactivos independientes para mascota, dueño, especie (Canino, Felino, Ave, Reptil, Roedor, Exótico, Otro), veterinario y fecha/hora.
+*   Formulario de registro y edicion de mascotas con validacion en tiempo real (nombre, especie, raza, fecha de nacimiento no futura, peso, dueño, telefono de contacto).
 
-### 3. Persistencia de Datos
-Uso de LocalStorage a traves de los servicios de Angular (MascotaService y CitaService) para almacenar y persistir los registros clinicos y la agenda de citas de forma local en el navegador del cliente.
+### 3. Auto-registro de Pacientes
+Al agendar una nueva cita en el sistema, la aplicacion verifica si el nombre de la mascota ya existe en el Directorio de Pacientes. Si no existe, crea un perfil automatico del paciente con los datos ingresados en la cita. Esto asegura que la informacion este sincronizada a lo largo de todo el proyecto de forma inmediata.
 
-### 4. Lógica de Colision de Horarios
+### 4. Emision de Comprobantes PDF
+El sistema cuenta con un modulo de emision de comprobantes para citas. Al registrar una cita, se despliega una confirmacion que permite al usuario abrir e imprimir un ticket limpio, formateado y estilizado utilizando las utilidades de impresion nativas del navegador (permitiendo imprimir de forma fisica o exportar directamente a formato PDF).
+
+### 5. Persistencia de Datos
+Uso de LocalStorage a traves de los servicios de Angular (MascotaService y CitaService) para almacenar y persistir los registros clinicos, informacion de dueños y la agenda de citas de forma local en el navegador del cliente.
+
+### 6. Logica de Colision de Horarios
 El sistema previene la sobre-programacion de los medicos veterinarios en CitaService. Al intentar registrar una cita en una fecha y hora especifica con un veterinario que ya tiene una cita asignada en ese bloque, la aplicacion bloquea la transaccion y muestra una alerta visual de conflicto de agenda.
 
-### 5. Elementos Avanzados de Angular (Pipes y Directivas)
-*   DateFormatPipe (date-format.ts): Transforma las fechas en formato ISO a una lectura legible en español (ej. Lunes, 15 de Jun - 10:00 AM).
+### 7. Elementos Avanzados de Angular (Pipes y Directivas)
+*   DateFormatPipe (date-format.ts): Transforma las fechas en formato ISO a una lectura legible en espanol (ej. Lunes, 15 de Jun - 10:00 AM).
 *   AppointmentStatusPipe (appointment-status.ts): Traduce y da formato a los estados de las citas (pendiente, en espera, completada, cancelada).
-*   HighlightUpcomingDirective (highlight-upcoming.ts): Añade dinamicamente la clase de resplandor upcoming-highlight a las tarjetas en el DOM si la cita ocurre dentro de las próximas 24 horas.
+*   HighlightUpcomingDirective (highlight-upcoming.ts): Anade dinamicamente la clase de resplandor upcoming-highlight a las tarjetas en el DOM si la cita ocurre dentro de las proximas 24 horas.
