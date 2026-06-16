@@ -24,7 +24,7 @@
         </div>
         <div class="stat-content">
           <span class="stat-value d-block h5 fw-bold">{{ stats.totalMascotas }}</span>
-          <span class="stat-label small text-muted">Mascotas Registradas</span>
+          <span class="stat-label small text-secondary">Mascotas Registradas</span>
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
         </div>
         <div class="stat-content">
           <span class="stat-value d-block h5 fw-bold">{{ stats.citasHoy }}</span>
-          <span class="stat-label small text-muted">Citas para Hoy</span>
+          <span class="stat-label small text-secondary">Citas para Hoy</span>
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
         </div>
         <div class="stat-content">
           <span class="stat-value d-block h5 fw-bold">{{ stats.citasCompletadas }}</span>
-          <span class="stat-label small text-muted">Atendidas Hoy</span>
+          <span class="stat-label small text-secondary">Atendidas Hoy</span>
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@
         </div>
         <div class="stat-content">
           <span class="stat-value d-block h5 fw-bold">{{ stats.alertasUrgentes }}</span>
-          <span class="stat-label small text-muted">Alertas Próximas</span>
+          <span class="stat-label small text-secondary">Alertas Próximas</span>
         </div>
       </div>
     </div>
@@ -80,7 +80,7 @@
   <div class="appointments-section fade-in">
     <div class="section-header mb-4">
       <h2 class="h4 fw-bold">📅 Próximas Citas del Día</h2>
-      <p class="subtitle small text-muted">Las citas programadas para las próximas 24 horas están resaltadas</p>
+      <p class="subtitle small text-secondary">Las citas programadas para las próximas 24 horas están resaltadas</p>
     </div>
 
     <div class="appointments-list row g-4">
@@ -100,12 +100,12 @@
                 <div class="flex-grow-1">
                   <div class="d-flex align-items-center mb-2">
                     <h3 class="h5 fw-bold mb-0">{{ cita.mascota }}</h3>
-                    <span class="pet-species badge bg-info text-dark ms-2 small">{{ getEspecieMascota(cita.mascota) }}</span>
+                    <span class="pet-species badge bg-info text-dark ms-2 small">{{ getEspecieMascota(cita) }}</span>
                   </div>
-                  <p class="owner-text text-muted small mb-2">
+                  <p class="owner-text text-secondary small mb-2">
                     <strong>Dueño:</strong> {{ cita.dueno }}
                   </p>
-                  <p class="motive-text text-muted small mb-0">
+                  <p class="motive-text text-secondary small mb-0">
                     <strong>Motivo:</strong> {{ cita.motivo }}
                   </p>
                 </div>

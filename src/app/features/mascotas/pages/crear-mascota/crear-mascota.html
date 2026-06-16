@@ -1,8 +1,8 @@
 <div class="container-form mt-5 mb-5">
   <div class="form-wrapper">
     <div class="form-header mb-4">
-      <h1 class="display-5 fw-bold">📝 Registrar Nueva Mascota</h1>
-      <p class="text-muted fs-6">Completa los datos de tu paciente con precisión</p>
+      <h1 class="display-5 fw-bold">📝 {{ esEdicion ? 'Editar Mascota' : 'Registrar Nueva Mascota' }}</h1>
+      <p class="text-muted fs-6">{{ esEdicion ? 'Actualiza los datos clínicos de tu paciente' : 'Completa los datos de tu paciente con precisión' }}</p>
     </div>
 
     <form [formGroup]="formulario" (ngSubmit)="onSubmit()" class="glass-panel p-5">
@@ -184,10 +184,10 @@
           class="btn btn-primary btn-lg px-4"
           [disabled]="formulario.invalid || enviando"
         >
-          <span *ngIf="!enviando">✓ Registrar Mascota</span>
+          <span *ngIf="!enviando">✓ {{ esEdicion ? 'Guardar Cambios' : 'Registrar Mascota' }}</span>
           <span *ngIf="enviando">
             <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            Registrando...
+            {{ esEdicion ? 'Guardando...' : 'Registrando...' }}
           </span>
         </button>
       </div>

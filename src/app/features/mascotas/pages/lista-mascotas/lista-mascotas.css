@@ -48,11 +48,11 @@
 /* Principal - turquesa/menta */
 .btn-glass-primary {
 	background: rgba(64,224,208,0.12);
-	color: rgba(3,60,55,0.95);
+	color: #40e0d0;
 	border: 1px solid rgba(64,224,208,0.28);
 }
 .btn-glass-primary:hover,
-.btn-glass-primary:focus { box-shadow: 0 8px 28px rgba(64,224,208,0.18), 0 0 8px rgba(64,224,208,0.12); transform: translateY(-1px); }
+.btn-glass-primary:focus { box-shadow: 0 8px 28px rgba(64,224,208,0.18), 0 0 8px rgba(64,224,208,0.12); transform: translateY(-1px); color: #fff; }
 
 /* Neutral - pizarra/gris humo */
 .btn-glass-neutral {
@@ -66,11 +66,11 @@
 /* Editar - ámbar/dorado sutil */
 .btn-glass-edit {
 	background: rgba(255,193,7,0.10);
-	color: rgba(60,40,0,0.95);
+	color: #ffc107;
 	border: 1px solid rgba(255,193,7,0.26);
 }
 .btn-glass-edit:hover,
-.btn-glass-edit:focus { box-shadow: 0 8px 28px rgba(255,193,7,0.14); transform: translateY(-1px); }
+.btn-glass-edit:focus { box-shadow: 0 8px 28px rgba(255,193,7,0.14); transform: translateY(-1px); color: #fff; }
 
 /* Eliminar - carmesí con glow en hover */
 .btn-glass-danger {
@@ -92,4 +92,22 @@ a[href^="tel:"] { color: inherit; text-decoration: underline; text-underline-off
 
 /* Utilidades */
 .mascota-card { overflow: hidden; }
+
+/* Custom card overrides for Dark Mode contrast */
+.card {
+  background: none !important;
+  border: none !important;
+}
+.card-title {
+  color: #ffffff !important;
+}
+.text-secondary {
+  color: var(--text-secondary) !important;
+}
+.text-secondary strong {
+  color: var(--text-primary) !important;
+}
+.border-secondary {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
 

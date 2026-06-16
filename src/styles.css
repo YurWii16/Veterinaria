@@ -189,22 +189,23 @@ p {
   transition: color 0.2s ease;
 }
 
-.form-control {
+.form-control, .form-select, input, select, textarea {
   width: 100%;
   padding: 0.75rem 1rem;
   font-family: var(--font-secondary);
   font-size: 0.95rem;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.3) !important;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-sm);
-  color: var(--text-primary);
+  color: #ffffff !important;
   outline: none;
   transition: all 0.25s ease;
 }
 
-.form-control:focus {
+.form-control:focus, .form-select:focus, input:focus, select:focus, textarea:focus {
   border-color: var(--border-focus);
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: #ffffff !important;
   box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
 }
 

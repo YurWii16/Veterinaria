@@ -1,6 +1,7 @@
 export interface Cita {
   id: number;
   mascota: string;
+  especie: string;
   dueno: string;
   fecha: Date;
   hora: string;

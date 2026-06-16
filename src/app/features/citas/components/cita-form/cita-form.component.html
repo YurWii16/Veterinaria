@@ -1,20 +1,25 @@
 <div class="glass-panel p-4 mb-4">
-  <h3 class="mb-3">Registrar Cita</h3>
+  <h3 class="mb-3 text-light">Registrar Cita</h3>
 
   <form [formGroup]="citaForm" (ngSubmit)="guardar()">
-    <!-- Mascotas Select Dropdown -->
+    <!-- Mascotas Name Input -->
     <div class="form-group mb-3">
-      <select class="form-control" formControlName="mascota">
-        <option value="">Seleccione Mascota</option>
-        <option *ngFor="let m of mascotas" [value]="m.nombre">
-          {{ m.nombre }} ({{ m.especie }})
+      <input class="form-control" placeholder="Nombre de la Mascota" formControlName="mascota">
+    </div>
+
+    <!-- Especie Select Dropdown -->
+    <div class="form-group mb-3">
+      <select class="form-control" formControlName="especie">
+        <option value="">Seleccione Especie / Tipo</option>
+        <option *ngFor="let esp of especies" [value]="esp">
+          {{ esp }}
         </option>
       </select>
     </div>
 
-    <!-- Owner read-only text input -->
+    <!-- Owner Input -->
     <div class="form-group mb-3">
-      <input class="form-control" placeholder="Dueño (Se auto-completa)" formControlName="dueno" readonly>
+      <input class="form-control" placeholder="Nombre del Dueño" formControlName="dueno">
     </div>
 
     <!-- Veterinarios Select -->

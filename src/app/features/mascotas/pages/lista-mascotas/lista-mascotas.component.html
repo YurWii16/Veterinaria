@@ -20,8 +20,8 @@
   <div class="filtros-section glass-panel p-4 mb-5">
     <h5 class="fw-bold text-light mb-3">🔎 Filtrar Pacientes</h5>
     <div class="row g-3 align-items-end">
-      <div class="col-md-4">
-        <label for="buscador" class="form-label fw-500">Buscar por nombre</label>
+      <div class="col-md-3">
+        <label for="buscador" class="form-label fw-500 text-light">Buscar por nombre</label>
         <input
           type="text"
           id="buscador"
@@ -31,30 +31,27 @@
         />
       </div>
 
-      <div class="col-md-4">
-        <label for="especie" class="form-label fw-500">Especie</label>
+      <div class="col-md-3">
+        <label for="especie" class="form-label fw-500 text-light">Especie</label>
         <select id="especie" class="form-select" [formControl]="especieControl">
           <option value="">Todas las especies</option>
           <option *ngFor="let esp of especies" [value]="esp">{{ EspecieLabel[esp] }}</option>
         </select>
       </div>
 
-      <div class="col-md-4 d-flex gap-2">
-        <div class="w-100">
-          <label for="dueno" class="form-label fw-500">Dueño</label>
-          <input
-            type="text"
-            id="dueno"
-            class="form-control"
-            [formControl]="duenoControl"
-            placeholder="Nombre del dueño"
-          />
-        </div>
+      <div class="col-md-3">
+        <label for="dueno" class="form-label fw-500 text-light">Dueño</label>
+        <input
+          type="text"
+          id="dueno"
+          class="form-control"
+          [formControl]="duenoControl"
+          placeholder="Nombre del dueño"
+        />
+      </div>
 
-        <div class="d-flex flex-column justify-content-end align-items-end">
-          <button type="button" class="btn btn-glass btn-glass-neutral mb-2" (click)="limpiarFiltros()">✕ Limpiar</button>
-          <a routerLink="crear" class="btn btn-glass btn-glass-primary">➕ Registrar</a>
-        </div>
+      <div class="col-md-3 d-grid">
+        <button type="button" class="btn btn-glass btn-glass-neutral py-2" (click)="limpiarFiltros()">✕ Limpiar Filtros</button>
       </div>
     </div>
   </div>
@@ -64,45 +61,46 @@
     <div class="col" *ngFor="let mascota of mascotasFiltradas">
       <div class="card glass-panel h-100">
         <div class="card-body p-4">
-          <div class="row">
-            <!-- Izquierda: datos clínicos -->
-            <div class="col-md-6">
-              <h5 class="card-title mb-2">{{ mascota.nombre }}</h5>
-              <p class="mb-1"><strong>Raza:</strong> {{ mascota.raza || '—' }}</p>
-              <p class="mb-1"><strong>Edad:</strong> {{ mascota.calcularEdad() }}</p>
-              <p class="mb-1"><strong>Peso:</strong> {{ mascota.pesoKg ? (mascota.pesoKg + ' kg') : '—' }}</p>
-              <p class="mb-0 text-muted small">ID: {{ mascota.id | slice:0:8 }}...</p>
+          <!-- Cabecera de la tarjeta -->
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h4 class="card-title mb-1 text-light fw-bold">{{ mascota.nombre }}</h4>
+              <span class="badge estado-badge" [ngClass]="'badge-' + obtenerEstadoColor(mascota)">
+                {{ mascota.requiereCuidadosEspeciales() ? 'Requiere cuidados' : (mascota.obtenerEstadoSalud() | uppercase) }}
+              </span>
             </div>
+            <span class="text-secondary small">ID: {{ mascota.id | slice:0:8 }}</span>
+          </div>
 
-            <!-- Derecha: contacto y estado -->
-            <div class="col-md-6 d-flex flex-column justify-content-between">
-              <div>
-                <p class="mb-1"><strong>Dueño:</strong> {{ mascota.duenoNombre || '—' }}</p>
-                <p class="mb-2">
-                  <a class="text-decoration-none" [href]="'tel:' + (mascota.telefonoContacto || '')">
-                    {{ mascota.telefonoContacto || '—' }}
-                  </a>
-                </p>
-              </div>
-
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="badge estado-badge" [ngClass]="'badge-' + obtenerEstadoColor(mascota)">
-                  {{ mascota.requiereCuidadosEspeciales() ? 'Requiere cuidados' : (mascota.obtenerEstadoSalud() | uppercase) }}
-                </span>
-
-                <div class="btn-group" role="group" aria-label="Acciones">
-                  <a [routerLink]="[mascota.id]" class="btn btn-glass btn-glass-neutral btn-sm">👁️ Detalles</a>
-                  <a [routerLink]="['editar', mascota.id]" class="btn btn-glass btn-glass-edit btn-sm">✏️ Editar</a>
-                  <button type="button" class="btn btn-glass btn-glass-danger btn-sm" (click)="eliminarMascota(mascota.id, mascota.nombre)">🗑️ Eliminar</button>
-                </div>
-              </div>
+          <!-- Detalles clínicos y del dueño -->
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <p class="mb-1 text-secondary"><strong>Raza:</strong> {{ mascota.raza || '—' }}</p>
+              <p class="mb-1 text-secondary"><strong>Edad:</strong> {{ mascota.calcularEdad() }}</p>
+              <p class="mb-0 text-secondary"><strong>Peso:</strong> {{ mascota.pesoKg ? (mascota.pesoKg + ' kg') : '—' }}</p>
             </div>
+            <div class="col-6">
+              <p class="mb-1 text-secondary"><strong>Dueño:</strong> {{ mascota.duenoNombre || '—' }}</p>
+              <p class="mb-0 text-secondary">
+                <strong>Tel:</strong> 
+                <a class="text-decoration-none text-info" [href]="'tel:' + (mascota.telefonoContacto || '')">
+                  {{ mascota.telefonoContacto || '—' }}
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <!-- Acciones -->
+          <div class="d-flex justify-content-end gap-2 pt-3 border-top border-secondary">
+            <a [routerLink]="[mascota.id]" class="btn btn-glass btn-glass-neutral btn-sm">👁️ Detalles</a>
+            <a [routerLink]="['editar', mascota.id]" class="btn btn-glass btn-glass-edit btn-sm">✏️ Editar</a>
+            <button type="button" class="btn btn-glass btn-glass-danger btn-sm" (click)="eliminarMascota(mascota.id, mascota.nombre)">🗑️ Eliminar</button>
           </div>
 
           <!-- Historial compactado -->
           <div class="mt-3 pt-3 border-top border-secondary" *ngIf="mascota.historialClinico.length > 0">
-            <small class="text-muted">📋 Última visita:</small>
-            <p class="mb-0 small">{{ mascota.obtenerUltimaAtencion()?.obtenerResumen() ?? 'Sin atenciones registradas' }}</p>
+            <small class="text-secondary">📋 Última visita:</small>
+            <p class="mb-0 small text-light">{{ mascota.obtenerUltimaAtencion()?.obtenerResumen() ?? 'Sin atenciones registradas' }}</p>
           </div>
         </div>
       </div>

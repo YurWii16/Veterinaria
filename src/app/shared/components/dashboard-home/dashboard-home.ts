@@ -61,8 +61,11 @@ export class DashboardHome implements OnInit {
     }).length;
   }
 
-  getEspecieMascota(nombreMascota: string): string {
-    const mascota = this.mascotas.find(m => m.nombre.toLowerCase() === nombreMascota.toLowerCase());
+  getEspecieMascota(cita: Cita): string {
+    if (cita.especie) {
+      return cita.especie;
+    }
+    const mascota = this.mascotas.find(m => m.nombre.toLowerCase() === cita.mascota.toLowerCase());
     return mascota ? mascota.especie : 'Mascota';
   }
 }

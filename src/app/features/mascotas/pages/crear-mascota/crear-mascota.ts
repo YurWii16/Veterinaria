@@ -8,7 +8,7 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { MascotaService } from '../../services/mascota.service';
 import { Mascota, Especie, EspecieLabel } from '../../models';
 
@@ -29,14 +29,56 @@ export class CrearMascotaComponent implements OnInit {
   EspecieLabel = EspecieLabel;
   especies = Object.values(Especie);
 
+  esEdicion = false;
+  mascotaId: string | null = null;
+  historialClinicoExistente: any[] = [];
+
   constructor(
     private fb: FormBuilder,
     private mascotaService: MascotaService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.inicializarFormulario();
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.esEdicion = true;
+        this.mascotaId = id;
+        this.cargarMascota(id);
+      }
+    });
+  }
+
+  private cargarMascota(id: string): void {
+    this.mascotaService.obtenerPorId(id).subscribe({
+      next: (mascota) => {
+        if (mascota) {
+          this.historialClinicoExistente = mascota.historialClinico || [];
+          let fechaFormateada = '';
+          if (mascota.fechaNacimiento) {
+            const d = new Date(mascota.fechaNacimiento);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            fechaFormateada = `${year}-${month}-${day}`;
+          }
+          this.formulario.patchValue({
+            nombre: mascota.nombre,
+            especie: mascota.especie,
+            raza: mascota.raza,
+            fechaNacimiento: fechaFormateada,
+            pesoKg: mascota.pesoKg,
+            duenoNombre: mascota.duenoNombre,
+            telefonoContacto: mascota.telefonoContacto,
+            observaciones: mascota.observaciones,
+          });
+        }
+      },
+      error: (error) => console.error('Error al cargar mascota para editar:', error),
+    });
   }
 
   private inicializarFormulario(): void {
@@ -105,32 +147,49 @@ export class CrearMascotaComponent implements OnInit {
     this.enviando = true;
     this.mensaje = '';
 
-    const nuevaMascotaData = {
+    const mascotaData = {
       nombre: this.formulario.value.nombre,
       especie: this.formulario.value.especie,
       raza: this.formulario.value.raza,
       fechaNacimiento: new Date(this.formulario.value.fechaNacimiento),
       pesoKg: parseFloat(this.formulario.value.pesoKg),
-      historialClinico: [],
+      historialClinico: this.historialClinicoExistente,
       duenoNombre: this.formulario.value.duenoNombre,
       telefonoContacto: this.formulario.value.telefonoContacto,
       observaciones: this.formulario.value.observaciones,
     };
 
-    this.mascotaService.crear(nuevaMascotaData as any).subscribe({
-      next: (mascota) => {
-        this.tipoMensaje = 'success';
-        this.mensaje = `✅ ${mascota.nombre} registrada exitosamente`;
-        setTimeout(() => {
-          this.router.navigate(['/mascotas']);
-        }, 1500);
-      },
-      error: (error) => {
-        this.enviando = false;
-        this.tipoMensaje = 'error';
-        this.mensaje = `❌ Error: ${error.message || 'No se pudo registrar la mascota'}`;
-      },
-    });
+    if (this.esEdicion && this.mascotaId) {
+      this.mascotaService.actualizar(this.mascotaId, mascotaData as any).subscribe({
+        next: (mascota) => {
+          this.tipoMensaje = 'success';
+          this.mensaje = `✅ ${mascota.nombre} actualizada exitosamente`;
+          setTimeout(() => {
+            this.router.navigate(['/dashboard/mascotas']);
+          }, 1500);
+        },
+        error: (error) => {
+          this.enviando = false;
+          this.tipoMensaje = 'error';
+          this.mensaje = `❌ Error: ${error.message || 'No se pudo actualizar la mascota'}`;
+        },
+      });
+    } else {
+      this.mascotaService.crear(mascotaData as any).subscribe({
+        next: (mascota) => {
+          this.tipoMensaje = 'success';
+          this.mensaje = `✅ ${mascota.nombre} registrada exitosamente`;
+          setTimeout(() => {
+            this.router.navigate(['/dashboard/mascotas']);
+          }, 1500);
+        },
+        error: (error) => {
+          this.enviando = false;
+          this.tipoMensaje = 'error';
+          this.mensaje = `❌ Error: ${error.message || 'No se pudo registrar la mascota'}`;
+        },
+      });
+    }
   }
 
   private marcarCamposComoTocados(): void {
@@ -140,7 +199,7 @@ export class CrearMascotaComponent implements OnInit {
   }
 
   cancelar(): void {
-    this.router.navigate(['/mascotas']);
+    this.router.navigate(['/dashboard/mascotas']);
   }
 
   obtenerErrorMensaje(control: any): string {

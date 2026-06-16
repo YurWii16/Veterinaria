@@ -54,13 +54,13 @@ export class DetallesMascotaComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (mascota) => {
           if (!mascota) {
-            this.router.navigate(['/mascotas']);
+            this.router.navigate(['/dashboard/mascotas']);
           } else {
             this.mascota = mascota;
           }
         },
         error: () => {
-          this.router.navigate(['/mascotas']);
+          this.router.navigate(['/dashboard/mascotas']);
         },
       });
   }
@@ -88,7 +88,7 @@ export class DetallesMascotaComponent implements OnInit, OnDestroy {
 
   editarMascota(): void {
     if (this.mascotaId) {
-      this.router.navigate(['/mascotas/editar', this.mascotaId]);
+      this.router.navigate(['/dashboard/mascotas/editar', this.mascotaId]);
     }
   }
 
@@ -102,7 +102,7 @@ export class DetallesMascotaComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.router.navigate(['/mascotas']);
+          this.router.navigate(['/dashboard/mascotas']);
         },
         error: (error) => {
           console.error('Error al eliminar:', error);
@@ -111,7 +111,7 @@ export class DetallesMascotaComponent implements OnInit, OnDestroy {
   }
 
   volver(): void {
-    this.router.navigate(['/mascotas']);
+    this.router.navigate(['/dashboard/mascotas']);
   }
 
   ngOnDestroy(): void {

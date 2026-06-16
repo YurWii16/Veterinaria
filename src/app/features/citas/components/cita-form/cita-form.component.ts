@@ -2,8 +2,6 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Cita } from '../../models/cita.model';
 import { CommonModule } from '@angular/common';
-import { MascotaService } from '../../../mascotas/services/mascota.service';
-import { Mascota } from '../../../mascotas/models';
 
 @Component({
   selector: 'app-cita-form',
@@ -16,15 +14,13 @@ export class CitaFormComponent implements OnInit {
 
   citaForm: FormGroup;
   veterinarios: string[] = ['Dr. Alejandro Bela', 'Dra. Sofía Martínez', 'Dr. García'];
-  mascotas: Mascota[] = [];
+  especies: string[] = ['Canino', 'Felino', 'Ave', 'Reptil', 'Roedor', 'Exótico', 'Otro'];
 
-  constructor(
-    private fb: FormBuilder,
-    private mascotaService: MascotaService
-  ) {
+  constructor(private fb: FormBuilder) {
     this.citaForm = this.fb.group({
       mascota: ['', Validators.required],
-      dueno: [{ value: '', disabled: true }, Validators.required], // Disabled because it's auto-populated
+      especie: ['', Validators.required],
+      dueno: ['', Validators.required],
       veterinario: ['', Validators.required],
       fecha: ['', Validators.required],
       hora: ['', Validators.required],
@@ -32,25 +28,7 @@ export class CitaFormComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    // Load pets from MascotaService
-    this.mascotaService.obtenerTodas().subscribe({
-      next: (list) => {
-        this.mascotas = list;
-      },
-      error: (err) => console.error('Error al cargar mascotas en formulario de citas:', err)
-    });
-
-    // Auto-populate owner when a pet is selected
-    this.citaForm.get('mascota')?.valueChanges.subscribe(petName => {
-      const selectedPet = this.mascotas.find(m => m.nombre === petName);
-      if (selectedPet) {
-        this.citaForm.get('dueno')?.setValue(selectedPet.duenoNombre);
-      } else {
-        this.citaForm.get('dueno')?.setValue('');
-      }
-    });
-  }
+  ngOnInit(): void {}
 
   guardar() {
     if (this.citaForm.valid) {
@@ -71,6 +49,7 @@ export class CitaFormComponent implements OnInit {
       this.nuevaCita.emit(cita);
       this.citaForm.reset({
         mascota: '',
+        especie: '',
         dueno: '',
         veterinario: '',
         fecha: '',

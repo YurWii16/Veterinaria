@@ -12,7 +12,7 @@
     style="position: relative;"
   >
     <div class="d-flex justify-between align-items-center mb-2" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-      <strong style="font-size: 1.1rem; color: var(--text-primary);">🐾 {{ cita.mascota }}</strong>
+      <strong style="font-size: 1.1rem; color: var(--text-primary);">🐾 {{ cita.mascota }} <span style="font-size: 0.8rem; font-weight: normal; opacity: 0.85;">({{ cita.especie }})</span></strong>
       <span class="badge" 
             [class.badge-warning]="cita.estado === 'pendiente'" 
             [class.badge-success]="cita.estado === 'completada'"
